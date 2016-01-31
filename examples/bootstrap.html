@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"  media="screen,projection"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="../template.js"></script>
+	<script src="../jQuery.ajaxExtend.js"></script>
+	<script>
+		$(document).on('ready', function(){
+			$('#button1').on('click', function(){
+				ajaxExtend.options.theme = "bootstrap";
+				ajaxExtend.options.templateDir= "templates/";
+				ajaxExtend.create().then(function(){
+					ajaxExtend.setExecute({
+						"url": "templates/bootstrap/modal.html",
+						"key": "keyName",
+						"processing": true,
+						"type": "GET",
+						"data": {},
+						"dataType": "HTML",
+						"text": "Retrieving Data",
+						"success": function (data, textStatus, xhr) {
+							if(xhr.status == 200) {
+								$('body').append(data);
+							}
+						},
+						"error": function (xhr, ajaxOptions, thrownError) {
+							console.error(thrownError);
+						}
+					});
+				});
+			});
+		});
+	</script>
+</head>
+
+<body>
+	<button id="button1" class="btn btn-primary">Load Progress</button>
+</body>
+</html>
