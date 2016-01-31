@@ -1,5 +1,5 @@
 var ajaxExtend = {
-	version: "0.6.5",
+	version: "0.6.6",
 	author: "Marc Evans (moridiweb)",
 	options: {
 		"hide": function(){
@@ -61,7 +61,8 @@ var ajaxExtend = {
 			buttonId: "ajaxExtendButton"
 		},
 		"offlineCache": false,
-		"offlineNo": 0
+		"offlineNo": 0,
+		"processRunning": false
 	},
 
 	create: function () {
@@ -102,6 +103,7 @@ var ajaxExtend = {
 		if( $( '#' + ajaxExtend.options.templateConfig.dialogId ).is(':visible') ) {
 			ajaxExtend.options.hide();
 		}
+		ajaxExtend.options.processRunning = false;
 		$(document).trigger('processingHide');
 	},
 
@@ -169,6 +171,7 @@ var ajaxExtend = {
 						url: options.url + queryString,  //Server script to process data
 						type: 'POST',
 						beforeSend: function (x) {
+							ajaxExtend.options.processRunning = true;
 							var i = 0;
 							var key = options.key;
 							/// Get unique key
@@ -314,6 +317,7 @@ var ajaxExtend = {
 				} else {
 
 					var formData = $(":text", $(options.prefix + 'Form')).serializeArray();
+					ajaxExtend.options.processRunning = true;
 
 					if (!$.isEmptyObject(options.data)) {
 						$.each(options.data, function (index, value) {
@@ -409,6 +413,7 @@ var ajaxExtend = {
 						return xhr;
 					},
 					"beforeSend": function (x) {
+						ajaxExtend.options.processRunning = true;
 
 						var i = 0;
 
@@ -1081,6 +1086,12 @@ var ajaxExtend = {
 
 	getLog: function () {
 		return ajaxExtend.options.log;
+	},
+
+	getOpen: function() {
+		var self = this;
+		var options = this.options;
+		return options.processRunning;
 	},
 
 	getStorageByValueObject: function ( value ) {
